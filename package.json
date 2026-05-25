@@ -1,0 +1,17 @@
+{
+  "name": "elevate-wall-designs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Premium client mockup — Elevate Wall Designs (South Florida custom wall panels)",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "PORT=2999 node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
