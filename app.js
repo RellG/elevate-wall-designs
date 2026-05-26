@@ -79,7 +79,30 @@
     document.body.style.overflow = '';
     lbImg.src = '';
   };
-  tiles.forEach(t => t.addEventListener('click', () => openLightbox(t)));
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tiles.forEach(t => {
+    if (t.classList.contains('gallery__tile--video')) {
+      const v = t.querySelector('video');
+      t.style.cursor = 'pointer';
+      t.addEventListener('click', () => {
+        if (!v) return;
+        if (v.paused) { v.play(); t.classList.add('is-playing'); }
+        else { v.pause(); t.classList.remove('is-playing'); }
+      });
+      v?.addEventListener('ended', () => t.classList.remove('is-playing'));
+      if (t.classList.contains('gallery__tile--featured') && !prefersReducedMotion && v) {
+        const playWhenVisible = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { v.play().catch(() => {}); t.classList.add('is-playing'); }
+            else { v.pause(); }
+          });
+        }, { threshold: 0.4 });
+        playWhenVisible.observe(t);
+      }
+    } else {
+      t.addEventListener('click', () => openLightbox(t));
+    }
+  });
   lbClose?.addEventListener('click', closeLightbox);
   lb?.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lb.classList.contains('is-open')) closeLightbox(); });
