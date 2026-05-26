@@ -453,20 +453,25 @@ input, textarea, select { font: inherit; color: inherit; }
 .chip.is-active, .chip:hover { background: var(--ink); color: var(--bone); border-color: var(--ink); }
 
 .gallery {
-  column-count: 3;
-  column-gap: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
 }
 .gallery__tile {
-  break-inside: avoid;
-  margin: 0 0 16px;
   position: relative;
   overflow: hidden;
   cursor: zoom-in;
   background: var(--cream);
+  aspect-ratio: 4 / 5;
+}
+.gallery__tile--featured {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
 }
 .gallery__tile img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   transition: transform var(--motion-slow), filter var(--motion-base);
 }
@@ -485,8 +490,11 @@ input, textarea, select { font: inherit; color: inherit; }
 .gallery__tile figcaption b { font-family: var(--font-display); font-weight: 500; font-size: 1.4rem; display: block; }
 .gallery__tile figcaption span { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone-soft); }
 
-@media (max-width: 900px) { .gallery { column-count: 2; } }
-@media (max-width: 560px) { .gallery { column-count: 1; } }
+@media (max-width: 900px) { .gallery { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) {
+  .gallery { grid-template-columns: 1fr; }
+  .gallery__tile--featured { aspect-ratio: 4 / 5; }
+}
 
 /* Touch devices: always show gallery captions (hover is unreliable) */
 @media (hover: none) {
@@ -498,9 +506,20 @@ input, textarea, select { font: inherit; color: inherit; }
 
 .gallery__tile.is-hidden { display: none; }
 
+.gallery__note {
+  margin: 28px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--walnut);
+  text-align: center;
+}
+
 .gallery__tile--video video {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   display: block;
   transition: transform var(--motion-slow);
 }
